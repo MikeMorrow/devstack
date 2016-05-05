@@ -17,12 +17,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :openServer do |openServer|
     openServer.vm.network :private_network, ip: "192.168.3.50"
-    openServer.vm.hostname = 'openServer'
+    openServer.vm.hostname = 'openserver'
     openServer.vm.provision "shell", path: "scripts/setupEnvironment.sh"
-    # openServer.vm.provision "shell", path: "scripts/ubuntu/installOMD.sh"
-    openServer.vm.provision "shell", path: "scripts/centos/installopenServer.sh"
-    openServer.vm.provision "shell", path: "scripts/centos/installCheckmkClient.sh"
-    openServer.vm.provision "shell", path: "scripts/centos/installCheckmkServer.sh"
-    openServer.vm.provision "shell", path: "scripts/centos/installCheckmkLivestatus.sh"
+    openServer.vm.provision "shell", path: "scripts/setupOpenstack.sh"
   end
 end
