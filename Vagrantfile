@@ -19,6 +19,6 @@ Vagrant.configure(2) do |config|
     openServer.vm.network :private_network, ip: "192.168.3.50"
     openServer.vm.hostname = 'openserver'
     openServer.vm.provision "shell", path: "scripts/setupEnvironment.sh"
-    openServer.vm.provision "shell", path: "scripts/setupOpenstack.sh"
+    openServer.vm.provision "shell", path: "scripts/installOpenstack.sh"
   end
 end

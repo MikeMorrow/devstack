@@ -1,22 +1,20 @@
 #!/bin/bash
-cd /home/stack
+
 # ---------------------------------------------------------------------------
-# Setup clone repo & enter directory
+# Setup stack user
 # ---------------------------------------------------------------------------
-git clone https://git.openstack.org/openstack-dev/devstack
-cd devstack
+useradd stack
+echo "stack        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/stack
+echo 'Defaults:stack !requiretty' >> /etc/sudoers.d/stack
+chown stack:stack /home/stack
 # ---------------------------------------------------------------------------
-# Setup local config
+# Install devstack
 # ---------------------------------------------------------------------------
-echo '[[local|localrc]]' > local.conf
-echo ADMIN_PASSWORD=password >> local.conf
-echo DATABASE_PASSWORD=password >> local.conf
-echo RABBIT_PASSWORD=password >> local.conf
-echo SERVICE_PASSWORD=password >> local.conf
-echo FLOATING_RANGE=192.168.3.224/27 >> local.conf
-echo FLAT_INTERFACE=enp0s8 >> local.conf
-echo HOST_IP=192.168.3.50 >> local.conf
+yum update -qy
+yum install -qy git
+sudo -u stack "/vagrant/scripts/installOpenstack.stack"
 # ---------------------------------------------------------------------------
-# Setup start openstack
+# Open iptables port -- insert rule at top
 # ---------------------------------------------------------------------------
-/home/stack/devstack/stack.sh
+iptables -I INPUT 1 -p tcp -m tcp --dport 80 -j ACCEPT
+iptables -I INPUT 1 -p tcp -m tcp --dport 8080 -j ACCEPT
